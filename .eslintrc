@@ -1,0 +1,26 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-inner-declarations": 0,
+    "no-useless-escape": 1,
+    "@typescript-eslint/ban-ts-comment": 1,
+    "@typescript-eslint/no-extra-semi": 0,
+    "@typescript-eslint/no-shadow": 2,
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/no-namespace": 0,
+  },
+  "ignorePatterns": ["dist/", "node_modules"]
+}
