@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+.vscode
+.idea
+dist
+.pnpm-debug.log
+.eslintcache
