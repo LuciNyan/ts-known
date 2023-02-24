@@ -1,17 +1,17 @@
 {
-  "name": "ts-guard",
+  "name": "ts-known",
   "type": "module",
   "version": "0.1.1",
   "packageManager": "pnpm@7.0.1",
   "author": "LuciNyan",
   "license": "MIT",
-  "homepage": "https://github.com/dodoco-tales/ts-guard#readme",
+  "homepage": "https://github.com/dodoco-tales/ts-known#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dodoco-tales/ts-guard.git"
+    "url": "git+https://github.com/dodoco-tales/ts-known.git"
   },
   "bugs": {
-    "url": "https://github.com/dodoco-tales/ts-guard/issues"
+    "url": "https://github.com/dodoco-tales/ts-known/issues"
   },
   "keywords": [
     "typescript",
