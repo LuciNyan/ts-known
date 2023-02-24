@@ -1,11 +1,13 @@
+import { isObject } from './base'
+
 export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is { [Key in K]: unknown } {
     return isObject(x) && name in x
-  }
+}
   
   const __SELF__ = (x: unknown): x is any => true
   let __GUARD_BY_PROPERTY__: any = {} 
   
-  function hasProperty<K extends string, V>(
+  export function hasProperty<K extends string, V>(
     x: unknown,
     name: K,
     guard: (value: unknown) => value is V,
@@ -23,7 +25,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
       return guard(x[name])
   }
   
-  function hasProperties<R extends Record<PropertyKey, unknown>>(
+  export function hasProperties<R extends Record<PropertyKey, unknown>>(
     x: unknown,
     guardByProperty: {
       [K in keyof R]: ((value: unknown) => value is R[K])
@@ -38,7 +40,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
     })
   }
   
-  function _hasProperty<K extends string, V>(
+  export function _hasProperty<K extends string, V>(
     x: unknown,
     name: K,
     guard: (value: unknown) => value is V,
@@ -59,7 +61,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
       return guard(x[name])
   }
   
-  function _hasProperties<R extends Record<PropertyKey, unknown>>(
+  export function _hasProperties<R extends Record<PropertyKey, unknown>>(
     x: unknown,
     guardByProperty: {
       [K in keyof R]: ((value: unknown) => value is R[K])

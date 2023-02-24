@@ -11,7 +11,7 @@ import {
     isDate,
     isSymbol,
     isWindow,
-} from './types'
+} from './base'
 
 describe('isString', () => {
     it('should return true if value is a string', () => {

@@ -1,3 +1,5 @@
+import { UnionToIntersection } from './utils'
+
 export function or<T extends any[]>(...guards: { [K in keyof T]: (x: unknown) => x is T[K] }): (x: unknown) => x is T[number] {
     return (x: unknown): x is T[number] => {
         return guards.some((guard) => guard(x))
