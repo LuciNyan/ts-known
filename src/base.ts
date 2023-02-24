@@ -51,7 +51,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
 }
 
 const __SELF__ = (x: unknown): x is any => true
-let __CHECKERS__: any = {} 
+let __GUARD_BY_PROPERTY__: any = {} 
 
 function hasProperty<K extends string, V>(
   x: unknown,
@@ -65,7 +65,7 @@ function hasProperty<K extends string, V>(
     const memo = new Set([x])
 
     if (guard === __SELF__) {
-        return _hasProperties(x[name], __CHECKERS__, memo)
+        return _hasProperties(x[name], __GUARD_BY_PROPERTY__, memo)
     }
 
     return guard(x[name])
@@ -73,18 +73,18 @@ function hasProperty<K extends string, V>(
 
 function hasProperties<R extends Record<PropertyKey, unknown>>(
   x: unknown,
-  checkers: {
+  guardByProperty: {
     [K in keyof R]: ((value: unknown) => value is R[K])
   },
 ): x is R {
-    __CHECKERS__ = checkers
+  __GUARD_BY_PROPERTY__ = guardByProperty
 
-    const keys = Object.keys(checkers)
-    const memo = new Set([x])
+  const keys = Object.keys(guardByProperty)
+  const memo = new Set([x])
 
-    return keys.every((key) => {
-        return _hasProperty(x, key, checkers[key], memo)
-    })
+  return keys.every((key) => {
+      return _hasProperty(x, key, guardByProperty[key], memo)
+  })
 }
 
 function _hasProperty<K extends string, V>(
@@ -101,7 +101,7 @@ function _hasProperty<K extends string, V>(
     if (guard === __SELF__) {
         return memo.has(x[name]) 
           ? true 
-          : _hasProperties(x[name], __CHECKERS__, memo)
+          : _hasProperties(x[name], __GUARD_BY_PROPERTY__, memo)
     }
 
     return guard(x[name])
@@ -109,24 +109,24 @@ function _hasProperty<K extends string, V>(
 
 function _hasProperties<R extends Record<PropertyKey, unknown>>(
   x: unknown,
-  checkers: {
+  guardByProperty: {
     [K in keyof R]: ((value: unknown) => value is R[K])
   },
   memo = new Set()
 ): x is R {
     memo.add(x)
 
-    const keys = Object.keys(checkers)
+    const keys = Object.keys(guardByProperty)
 
     return keys.every((key) => {
-        return _hasProperty(x, key, checkers[key], memo)
+        return _hasProperty(x, key, guardByProperty[key], memo)
     })
 }
 
-function generate<R extends Record<PropertyKey, unknown>>(checkers: {
+function make<R extends Record<PropertyKey, unknown>>(guardByProperty: {
     [K in keyof R]: ((value: unknown) => value is R[K])
   }): (value: unknown) => value is R {
     return (x: unknown): x is R => {
-        return hasProperties(x, checkers)
+        return hasProperties(x, guardByProperty)
     }
 }
