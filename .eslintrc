@@ -15,6 +15,8 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "semi": [ERROR, 'never'],
+    "comma-dangle": ["warn", "always-multiline"],
     "no-inner-declarations": 0,
     "no-useless-escape": 1,
     "@typescript-eslint/ban-ts-comment": 1,
@@ -23,7 +25,22 @@
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-namespace": 0,
     "@typescript-eslint/no-empty-function": 1,
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "simple-import-sort/imports": [
+      "warn",
+      {
+        groups: [
+          ['^@?\\w'],
+          // Side effect imports.
+          ['^\\u0000'],
+          // Parent imports. Put `..` last.
+          ['^@(/.*|$)', '^\\.\\.(?!/?$)', '^\\.\\./?$'],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ['^\\./(?=.*/)(?!/?$)', '^\\.(?!/?$)', '^\\./?$'],
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "warn",
   },
   "ignorePatterns": ["dist/", "node_modules"]
 }
