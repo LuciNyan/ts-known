@@ -40,7 +40,7 @@ export function hasProperties<R extends Record<PropertyKey, unknown>>(
 
   return Object.entries(guardByProperty).every(([key, guard]) => {
     return _hasProperty(x, key, guard, memo);
-  });
+  })
 }
 
 export function _hasProperty<K extends string, V>(
@@ -75,5 +75,5 @@ export function _hasProperties<R extends Record<PropertyKey, unknown>>(
 
   return Object.entries(guardByProperty).every(([key, guard]) => {
     return _hasProperty(x, key, guard, memo);
-  });
+  })
 }

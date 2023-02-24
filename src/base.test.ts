@@ -1,24 +1,25 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest"
+
 import {
-  isString,
-  isNumber,
   isBoolean,
-  isUndefined,
-  isNull,
+  isDate,
   isFunction,
+  isNull,
+  isNumber,
   isObject,
   isRegExp,
-  isDate,
+  isString,
   isSymbol,
+  isUndefined,
   isWindow,
-} from "./base";
+} from "./base"
 
 describe("isString", () => {
   it("should return true if value is a string", () => {
     expect(isString("foo")).toBe(true);
     expect(isString("")).toBe(true);
     expect(isString(String("foo"))).toBe(true);
-  });
+  })
 
   it("should return false if value is not a string", () => {
     expect(isString(123)).toBe(false);
@@ -27,14 +28,14 @@ describe("isString", () => {
     expect(isString({})).toBe(false);
     expect(isString([])).toBe(false);
     expect(isString(true)).toBe(false);
-  });
+  })
 });
 
 describe("isNumber", () => {
   it("should return true if value is a number", () => {
     expect(isNumber(123)).toBe(true);
     expect(isNumber(Number("123"))).toBe(true);
-  });
+  })
 
   it("should return false if value is not a number", () => {
     expect(isNumber("123")).toBe(false);
@@ -43,7 +44,7 @@ describe("isNumber", () => {
     expect(isNumber({})).toBe(false);
     expect(isNumber([])).toBe(false);
     expect(isNumber(true)).toBe(false);
-  });
+  })
 });
 
 describe("isBoolean", () => {
@@ -51,7 +52,7 @@ describe("isBoolean", () => {
     expect(isBoolean(true)).toBe(true);
     expect(isBoolean(false)).toBe(true);
     expect(isBoolean(Boolean("true"))).toBe(true);
-  });
+  })
 
   it("should return false if value is not a boolean", () => {
     expect(isBoolean("true")).toBe(false);
@@ -60,14 +61,14 @@ describe("isBoolean", () => {
     expect(isBoolean({})).toBe(false);
     expect(isBoolean([])).toBe(false);
     expect(isBoolean(123)).toBe(false);
-  });
+  })
 });
 
 describe("isUndefined", () => {
   it("should return true if value is undefined", () => {
     expect(isUndefined(undefined)).toBe(true);
     expect(isUndefined(void 0)).toBe(true);
-  });
+  })
 
   it("should return false if value is not undefined", () => {
     expect(isUndefined(null)).toBe(false);
@@ -75,13 +76,13 @@ describe("isUndefined", () => {
     expect(isUndefined({})).toBe(false);
     expect(isUndefined([])).toBe(false);
     expect(isUndefined(123)).toBe(false);
-  });
+  })
 });
 
 describe("isNull", () => {
   it("should return true if value is null", () => {
     expect(isNull(null)).toBe(true);
-  });
+  })
 
   it("should return false if value is not null", () => {
     expect(isNull(undefined)).toBe(false);
@@ -89,14 +90,14 @@ describe("isNull", () => {
     expect(isNull({})).toBe(false);
     expect(isNull([])).toBe(false);
     expect(isNull(123)).toBe(false);
-  });
+  })
 });
 
 describe("isFunction", () => {
   it("should return true if value is a function", () => {
     expect(isFunction(() => {})).toBe(true);
     expect(isFunction(function () {})).toBe(true);
-  });
+  })
 
   it("should return false if value is not a function", () => {
     expect(isFunction(undefined)).toBe(false);
@@ -104,28 +105,28 @@ describe("isFunction", () => {
     expect(isFunction([])).toBe(false);
     expect(isFunction(123)).toBe(false);
     expect(isFunction(null)).toBe(false);
-  });
+  })
 
   it("should return true if value is a class", () => {
     class Test {}
     expect(isFunction(Test)).toBe(true);
-  });
+  })
 
   it("should return true for async function", () => {
     expect(isFunction(async () => {})).toBe(false);
-  });
+  })
 
   it("should return false for generator function", () => {
     expect(isFunction(function* () {})).toBe(false);
-  });
+  })
 
   it("should return true for arrow function", () => {
     expect(isFunction(() => {})).toBe(true);
-  });
+  })
 
   it("should return true for built-in functions", () => {
     expect(isFunction(Array.isArray)).toBe(true);
-  });
+  })
 });
 
 describe("isObject", () => {
@@ -133,7 +134,7 @@ describe("isObject", () => {
     expect(isObject({})).toBe(true);
     expect(isObject(Object.create(null))).toBe(true);
     expect(isObject(new Object())).toBe(true);
-  });
+  })
 
   it("should return false if value is not an object", () => {
     expect(isObject(undefined)).toBe(false);
@@ -142,14 +143,14 @@ describe("isObject", () => {
     expect(isObject("string")).toBe(false);
     expect(isObject(true)).toBe(false);
     expect(isObject(function () {})).toBe(false);
-  });
+  })
 });
 
 describe("isRegExp", () => {
   it("should return true if value is a RegExp", () => {
     expect(isRegExp(/abc/)).toBe(true);
     expect(isRegExp(new RegExp("abc"))).toBe(true);
-  });
+  })
 
   it("should return false if value is not a RegExp", () => {
     expect(isRegExp(undefined)).toBe(false);
@@ -158,13 +159,13 @@ describe("isRegExp", () => {
     expect(isRegExp("string")).toBe(false);
     expect(isRegExp(true)).toBe(false);
     expect(isRegExp({})).toBe(false);
-  });
+  })
 });
 
 describe("isDate", () => {
   it("should return true if value is a Date", () => {
     expect(isDate(new Date())).toBe(true);
-  });
+  })
 
   it("should return false if value is not a Date", () => {
     expect(isDate(undefined)).toBe(false);
@@ -173,14 +174,14 @@ describe("isDate", () => {
     expect(isDate("string")).toBe(false);
     expect(isDate(true)).toBe(false);
     expect(isDate({})).toBe(false);
-  });
+  })
 });
 
 describe("isSymbol", () => {
   it("should return true if value is a Symbol", () => {
     expect(isSymbol(Symbol())).toBe(true);
     expect(isSymbol(Symbol("foo"))).toBe(true);
-  });
+  })
 
   it("should return false if value is not a Symbol", () => {
     expect(isSymbol(undefined)).toBe(false);
@@ -189,7 +190,7 @@ describe("isSymbol", () => {
     expect(isSymbol("string")).toBe(false);
     expect(isSymbol(true)).toBe(false);
     expect(isSymbol({})).toBe(false);
-  });
+  })
 });
 
 describe("isWindow", () => {
@@ -200,5 +201,5 @@ describe("isWindow", () => {
     expect(isWindow("string")).toBe(false);
     expect(isWindow(true)).toBe(false);
     expect(isWindow({})).toBe(false);
-  });
+  })
 });
