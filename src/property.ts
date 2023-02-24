@@ -31,11 +31,10 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
   ): x is R {
     __GUARD_BY_PROPERTY__ = guardByProperty
   
-    const keys = Object.keys(guardByProperty)
     const memo = new Set([x])
   
-    return keys.every((key) => {
-        return _hasProperty(x, key, guardByProperty[key], memo)
+    return Object.entries(guardByProperty).every(([key, guard]) => {
+      return _hasProperty(x, key, guard, memo)
     })
   }
   
@@ -45,8 +44,9 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
     guard: (value: unknown) => value is V,
     memo = new Set()
   ): x is { [Key in K]: V } {
-      if (!hasUnknownProperty(x, name))
-          return false
+      if (!hasUnknownProperty(x, name)) {
+        return false
+      }
       
       memo.add(x)
   
@@ -68,9 +68,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
   ): x is R {
       memo.add(x)
   
-      const keys = Object.keys(guardByProperty)
-  
-      return keys.every((key) => {
-          return _hasProperty(x, key, guardByProperty[key], memo)
+      return Object.entries(guardByProperty).every(([key, guard]) => {
+          return _hasProperty(x, key, guard, memo)
       })
   }
