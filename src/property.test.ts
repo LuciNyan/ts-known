@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { hasUnknownProperty, hasProperty, hasProperties } from './property'
 import { isString, isNumber, isBoolean } from './base'
+import { make } from './make'
 
 describe('hasUnknownProperty', () => {
     it('should return true when the specified property is an unknown type', () => {
