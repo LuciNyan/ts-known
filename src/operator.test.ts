@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { or, and } from './operator'
-import { isString, isNumber, isBoolean } from './base'
+import { isString, isNumber, isBoolean, isObject, make } from './base'
 
 describe('or', () => {
     it('should return true if value matches any of the guards', () => {
@@ -20,17 +20,27 @@ describe('or', () => {
 });
   
 describe('and', () => {
+    const guard = and(
+        isObject, 
+        make({
+            name: isString
+        }),
+        make({
+            age: isNumber
+        })
+      );
+
     it('should return true if value matches all of the guards', () => {
-      const guard = and(isObject, hasProperty('name', isString));
-      expect(guard({ name: 'John' })).toBe(true);
+      expect(guard({ name: 'LuciNyan', age: 17 })).toBe(true);
     });
   
     it('should return false if value does not match all of the guards', () => {
-      const guard = and(isObject, hasProperty('name', isString));
       expect(guard(undefined)).toBe(false);
       expect(guard(null)).toBe(false);
       expect(guard({ name: 123 })).toBe(false);
       expect(guard({ age: 30 })).toBe(false);
+      expect(guard({ name: 123 })).toBe(false);
+      expect(guard({ name: 'LuciNyan', age: '17' })).toBe(false);
     });
 });
   
