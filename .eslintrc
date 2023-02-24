@@ -21,6 +21,7 @@
     "@typescript-eslint/no-shadow": 2,
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-namespace": 0,
+    "@typescript-eslint/no-empty-function": 1
   },
   "ignorePatterns": ["dist/", "node_modules"]
 }
