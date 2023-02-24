@@ -90,9 +90,7 @@ describe('isNull', () => {
         expect(isNull([])).toBe(false)
         expect(isNull(123)).toBe(false)
     })
-})
 
-describe('isFunction', () => {
     it('should return true if value is a function', () => {
         expect(isFunction(() => {})).toBe(true)
         expect(isFunction(function() {})).toBe(true)
@@ -104,5 +102,108 @@ describe('isFunction', () => {
         expect(isFunction([])).toBe(false)
         expect(isFunction(123)).toBe(false)
         expect(isFunction(null)).toBe(false)
+    })
+
+    it('should return true if value is a class', () => {
+        class Test {}
+        expect(isFunction(Test)).toBe(true)
+    })
+    
+    it('should return true for async function', () => {
+        expect(isFunction(async () => {})).toBe(true)
+    })
+    
+    it('should return true for generator function', () => {
+        expect(isFunction(function* () {})).toBe(true)
+    })
+    
+    it('should return true for arrow function', () => {
+        expect(isFunction(() => {})).toBe(true)
+    })
+    
+    it('should return true for built-in functions', () => {
+        expect(isFunction(Array.isArray)).toBe(true)
+    })
+})
+
+
+
+    
+describe('isObject', () => {
+    it('should return true if value is an object', () => {
+        expect(isObject({})).toBe(true)
+        expect(isObject(Object.create(null))).toBe(true)
+        expect(isObject(new Object())).toBe(true)
+    })
+
+    it('should return false if value is not an object', () => {
+        expect(isObject(undefined)).toBe(false)
+        expect(isObject(null)).toBe(false)
+        expect(isObject(123)).toBe(false)
+        expect(isObject('string')).toBe(false)
+        expect(isObject(true)).toBe(false)
+        expect(isObject(function () {})).toBe(false)
+    })
+})
+    
+describe('isRegExp', () => {
+    it('should return true if value is a RegExp', () => {
+        expect(isRegExp(/abc/)).toBe(true)
+        expect(isRegExp(new RegExp('abc'))).toBe(true)
+    })
+
+    it('should return false if value is not a RegExp', () => {
+        expect(isRegExp(undefined)).toBe(false)
+        expect(isRegExp(null)).toBe(false)
+        expect(isRegExp(123)).toBe(false)
+        expect(isRegExp('string')).toBe(false)
+        expect(isRegExp(true)).toBe(false)
+        expect(isRegExp({})).toBe(false)
+    })
+})
+    
+describe('isDate', () => {
+    it('should return true if value is a Date', () => {
+        expect(isDate(new Date())).toBe(true)
+    })
+
+    it('should return false if value is not a Date', () => {
+        expect(isDate(undefined)).toBe(false)
+        expect(isDate(null)).toBe(false)
+        expect(isDate(123)).toBe(false)
+        expect(isDate('string')).toBe(false)
+        expect(isDate(true)).toBe(false)
+        expect(isDate({})).toBe(false)
+    })
+})
+    
+describe('isSymbol', () => {
+    it('should return true if value is a Symbol', () => {
+        expect(isSymbol(Symbol())).toBe(true)
+        expect(isSymbol(Symbol('foo'))).toBe(true)
+    })
+
+    it('should return false if value is not a Symbol', () => {
+        expect(isSymbol(undefined)).toBe(false)
+        expect(isSymbol(null)).toBe(false)
+        expect(isSymbol(123)).toBe(false)
+        expect(isSymbol('string')).toBe(false)
+        expect(isSymbol(true)).toBe(false)
+        expect(isSymbol({})).toBe(false)
+    })
+})
+    
+describe('isWindow', () => {
+    it('should return true if value is the window object', () => {
+        expect(isWindow(window)).toBe(true)
+    })
+
+    it('should return false if value is not the window object', () => {
+        expect(isWindow(undefined)).toBe(false)
+        expect(isWindow(null)).toBe(false)
+        expect(isWindow(123)).toBe(false)
+        expect(isWindow('string')).toBe(false)
+        expect(isWindow(true)).toBe(false)
+        expect(isWindow({})).toBe(false)
     })
 })
