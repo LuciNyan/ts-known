@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { or, and } from './operator'
+import { isString, isNumber, isBoolean } from './base'
 
 describe('or', () => {
     it('should return true if value matches any of the guards', () => {
