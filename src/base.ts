@@ -130,3 +130,9 @@ function make<R extends Record<PropertyKey, unknown>>(guardByProperty: {
         return hasProperties(x, guardByProperty)
     }
 }
+
+function or<T extends any[]>(...guards: { [K in keyof T]: (x: unknown) => x is T[K] }): (x: unknown) => x is T[number] {
+  return (x: unknown): x is T[number] => {
+    return guards.some((guard) => guard(x))
+  }
+}
