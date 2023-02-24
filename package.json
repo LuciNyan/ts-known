@@ -38,6 +38,7 @@
     "build": "rollup -c",
     "dev": "nr build --watch",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run build",
     "release": "bumpp --commit --push --tag && npm publish --access=public",
     "start": "esno src/index.ts",
