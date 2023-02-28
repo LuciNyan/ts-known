@@ -73,7 +73,3 @@ export function _hasProperties<R extends Record<PropertyKey, unknown>>(
     return _hasProperty(x, key, guard, memo)
   })
 }
-
-export const hasUnknownProp = hasUnknownProperty
-export const hasProp = hasProperty
-export const hasProps = hasProperties
