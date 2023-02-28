@@ -5,7 +5,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
   return isObject(x) && name in x
 }
 
-const __SELF__ = (x: unknown): x is any => true
+export const SELF = (x: unknown): x is any => true
 let __GUARD_BY_PROPERTY__: any = {}
 
 export function hasProperty<K extends string, V>(
@@ -19,7 +19,7 @@ export function hasProperty<K extends string, V>(
 
   const memo = new Set([x])
 
-  if (guard === __SELF__) {
+  if (guard === SELF) {
     return _hasProperties(x[name], __GUARD_BY_PROPERTY__, memo)
   }
 
@@ -53,7 +53,7 @@ export function _hasProperty<K extends string, V>(
 
   memo.add(x)
 
-  if (guard === __SELF__) {
+  if (guard === SELF) {
     return memo.has(x[name]) ? true : _hasProperties(x[name], __GUARD_BY_PROPERTY__, memo)
   }
 
@@ -74,5 +74,6 @@ export function _hasProperties<R extends Record<PropertyKey, unknown>>(
   })
 }
 
+export const hasUnknownProp = hasUnknownProperty
 export const hasProp = hasProperty
 export const hasProps = hasProperties
