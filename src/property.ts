@@ -1,4 +1,5 @@
 import { isObject } from './base'
+import { Guard } from './utils'
 
 export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is { [Key in K]: unknown } {
   return isObject(x) && name in x
@@ -28,7 +29,7 @@ export function hasProperty<K extends string, V>(
 export function hasProperties<R extends Record<PropertyKey, unknown>>(
   x: unknown,
   guardByProperty: {
-    [K in keyof R]: (value: unknown) => value is R[K]
+    [K in keyof R]: Guard<R[K]>
   }
 ): x is R {
   __GUARD_BY_PROPERTY__ = guardByProperty
@@ -43,7 +44,7 @@ export function hasProperties<R extends Record<PropertyKey, unknown>>(
 export function _hasProperty<K extends string, V>(
   x: unknown,
   name: K,
-  guard: (value: unknown) => value is V,
+  guard: Guard<V>,
   memo = new Set()
 ): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
@@ -62,7 +63,7 @@ export function _hasProperty<K extends string, V>(
 export function _hasProperties<R extends Record<PropertyKey, unknown>>(
   x: unknown,
   guardByProperty: {
-    [K in keyof R]: (value: unknown) => value is R[K]
+    [K in keyof R]: Guard<R[K]>
   },
   memo = new Set()
 ): x is R {
