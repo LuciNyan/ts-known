@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { isBoolean, isNumber, isObject, isString } from './base'
 import { make } from './make'
-import { and, or, arrayOf } from './operator'
+import { and, arrayOf, or } from './operator'
 
 describe('or', () => {
   it('should return true if value matches any of the guards', () => {
@@ -47,31 +47,47 @@ describe('and', () => {
 })
 
 describe('arrayOf', () => {
-  const guard = arrayOf(
-    isString,
-    isNumber
-  )
-  const guard1 = arrayOf(or(
-    isString,
-    isNumber
-  ))
+  describe('when passed an array of guards', () => {
+    const guard = arrayOf(isNumber, isString)
 
+    it('returns true when passed an array of matching types', () => {
+      expect(guard([1])).toBe(true)
+      expect(guard([1, 'hello'])).toBe(true)
+      expect(guard(['1', 'hello', '1', 'hello'])).toBe(true)
+    })
 
-  it('should return true if value matche', () => {
-    expect(guard([1])).toBe(true)
-    expect(guard([1, 2])).toBe(true)
-    expect(guard(['Luci'])).toBe(true)
-    expect(guard1([1])).toBe(true)
-    expect(guard1([1, 2])).toBe(true)
-    expect(guard1(['Luci'])).toBe(true)
+    it('returns false when passed an array of non-matching types', () => {
+      expect(guard([true])).toBe(false)
+      expect(guard([1, 'hello', true])).toBe(false)
+    })
   })
 
-  it('should return false if value does not match', () => {
-    expect(guard(undefined)).toBe(false)
-    expect(guard(null)).toBe(false)
-    expect(guard({ name: 123 })).toBe(false)
-    expect(guard1(undefined)).toBe(false)
-    expect(guard1(null)).toBe(false)
-    expect(guard1({ name: 123 })).toBe(false)
+  describe('when passed a spread of guards', () => {
+    const guard = arrayOf(isNumber, isString)
+
+    it('returns true when passed an array of matching types', () => {
+      expect(guard([1])).toBe(true)
+      expect(guard([1, 'hello'])).toBe(true)
+      expect(guard(['1', 'hello', '1', 'hello'])).toBe(true)
+    })
+
+    it('returns false when passed an array of non-matching types', () => {
+      expect(guard([true])).toBe(false)
+      expect(guard([1, 'hello', true])).toBe(false)
+    })
+  })
+
+  describe('when passed a combination of guards', () => {
+    const guard = arrayOf([isBoolean, isNumber])
+
+    it('returns true when passed an array of matching types', () => {
+      expect(guard([false, 1])).toBe(true)
+    })
+
+    it('returns false when passed an array of non-matching types', () => {
+      expect(guard([1, false])).toBe(false)
+      expect(guard([false])).toBe(false)
+      expect(guard([false, 'hello'])).toBe(false)
+    })
   })
 })
