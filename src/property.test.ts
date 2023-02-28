@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { isNumber, isString } from './base'
 import { objectOf } from './operator'
-import { hasProperties, hasProperty, hasUnknownProperty } from './property'
+import { hasProperties, hasProperty, hasUnknownProperty, SELF } from './property'
 
 describe('hasUnknownProperty', () => {
   it('should return true when the specified property is an unknown type', () => {
@@ -47,6 +47,16 @@ describe('hasProperty', () => {
     expect(hasProperty(true, 'age', isNumber)).toBe(false)
     expect(hasProperty(null, 'age', isNumber)).toBe(false)
     expect(hasProperty(undefined, 'age', isNumber)).toBe(false)
+  })
+
+  it('should return the correct value when encountering circular references', () => {
+    const elem: any = { name: 'element' }
+
+    elem.abc = elem
+    expect(hasProperty(elem, 'ref', SELF)).toBe(false)
+
+    elem.ref = elem
+    expect(hasProperty(elem, 'ref', SELF)).toBe(true)
   })
 })
 

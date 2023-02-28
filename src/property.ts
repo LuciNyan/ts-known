@@ -6,7 +6,6 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
 }
 
 export const SELF = (x: unknown): x is any => true
-let __GUARD_BY_PROPERTY__: any = {}
 
 export function hasProperty<K extends string, V>(
   x: unknown,
@@ -20,7 +19,7 @@ export function hasProperty<K extends string, V>(
   const memo = new Set([x])
 
   if (guard === SELF) {
-    return _hasProperties(x[name], __GUARD_BY_PROPERTY__, memo)
+    return _hasProperty(x[name], name, SELF, memo)
   }
 
   return guard(x[name])
@@ -32,20 +31,21 @@ export function hasProperties<R extends Record<PropertyKey, unknown>>(
     [K in keyof R]: Guard<R[K]>
   }
 ): x is R {
-  __GUARD_BY_PROPERTY__ = guardByProperty
-
   const memo = new Set([x])
 
   return Object.entries(guardByProperty).every(([key, guard]) => {
-    return _hasProperty(x, key, guard, memo)
+    return _hasProperty(x, key, guard, memo, guardByProperty)
   })
 }
 
-export function _hasProperty<K extends string, V>(
+export function _hasProperty<K extends string, V, R extends Record<PropertyKey, unknown>>(
   x: unknown,
   name: K,
   guard: Guard<V>,
-  memo = new Set()
+  memo = new Set(),
+  guardByProperty: {
+    [Key in keyof R]?: Guard<R[Key]>
+  } = {}
 ): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
     return false
@@ -54,7 +54,7 @@ export function _hasProperty<K extends string, V>(
   memo.add(x)
 
   if (guard === SELF) {
-    return memo.has(x[name]) ? true : _hasProperties(x[name], __GUARD_BY_PROPERTY__, memo)
+    return memo.has(x[name]) ? true : _hasProperties(x[name], guardByProperty, memo)
   }
 
   return guard(x[name])
@@ -63,13 +63,13 @@ export function _hasProperty<K extends string, V>(
 export function _hasProperties<R extends Record<PropertyKey, unknown>>(
   x: unknown,
   guardByProperty: {
-    [K in keyof R]: Guard<R[K]>
+    [Key in keyof R]?: Guard<R[Key]>
   },
   memo = new Set()
 ): x is R {
   memo.add(x)
 
   return Object.entries(guardByProperty).every(([key, guard]) => {
-    return _hasProperty(x, key, guard, memo)
+    return _hasProperty(x, key, guard, memo, guardByProperty)
   })
 }
