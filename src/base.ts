@@ -43,3 +43,7 @@ export function isSymbol(x: unknown): x is Symbol {
 export function isWindow(x: unknown): x is Window {
   return toString(x) === '[object Window]'
 }
+
+export function isIterator(obj: unknown): obj is Iterator<unknown> {
+  return isObject(obj) && obj !== null && typeof (obj as any)[Symbol.iterator] === 'function'
+}

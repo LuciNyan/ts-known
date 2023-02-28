@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { isNumber, isString } from './base'
-import { make } from './make'
+import { objectOf } from './operator'
 import { hasProperties, hasProperty, hasUnknownProperty } from './property'
 
 describe('hasUnknownProperty', () => {
@@ -56,7 +56,7 @@ describe('hasProperties', () => {
     const guardByProperty = {
       name: isString,
       age: isNumber,
-      address: make({ city: isString }),
+      address: objectOf({ city: isString }),
     }
     expect(hasProperties(person, guardByProperty)).toBe(true)
   })
@@ -70,7 +70,7 @@ describe('hasProperties', () => {
     const guardByProperty = {
       name: isString,
       age: isNumber,
-      address: make({ city: isString }),
+      address: objectOf({ city: isString }),
     }
     expect(hasProperties(person, guardByProperty)).toBe(false)
   })
@@ -80,7 +80,7 @@ describe('hasProperties', () => {
     const guardByProperty = {
       name: isString,
       age: isNumber,
-      address: make({ city: isString }),
+      address: objectOf({ city: isString }),
     }
     expect(hasProperties(person, guardByProperty)).toBe(false)
   })

@@ -1,48 +1,40 @@
 import { describe, expect, it } from 'vitest'
 
 import { isBoolean, isNumber, isObject, isString } from './base'
-import { make } from './make'
-import { and, arrayOf, or } from './operator'
+import { and, arrayOf, objectOf, or } from './operator'
+import { SELF } from './property'
 
-describe('or', () => {
-  it('should return true if value matches any of the guards', () => {
-    const guard = or(isString, isNumber, isBoolean)
-    expect(guard('foo')).toBe(true)
-    expect(guard(123)).toBe(true)
-    expect(guard(true)).toBe(true)
-  })
+type Elem = {
+  name: string
+  ref: Elem
+}
 
-  it('should return false if value does not match any of the guards', () => {
-    const guard = or(isString, isNumber, isBoolean)
-    expect(guard(undefined)).toBe(false)
-    expect(guard(null)).toBe(false)
-    expect(guard({})).toBe(false)
-    expect(guard([])).toBe(false)
-  })
-})
-
-describe('and', () => {
-  const guard = and(
-    isObject,
-    make({
-      name: isString,
-    }),
-    make({
-      age: isNumber,
+describe('objectOf', () => {
+  it('should return a function that checks if an object has properties guarded by given guards', () => {
+    const guard = objectOf({
+      foo: isString,
+      bar: isNumber,
+      baz: isBoolean,
     })
-  )
 
-  it('should return true if value matches all of the guards', () => {
-    expect(guard({ name: 'LuciNyan', age: 17 })).toBe(true)
+    expect(guard({ foo: 'hello', bar: 123, baz: false })).toBe(true)
+    expect(guard({ foo: 'world', bar: '123', baz: false })).toBe(false)
+    expect(guard({ foo: 'hello', bar: 123 })).toBe(false)
   })
 
-  it('should return false if value does not match all of the guards', () => {
-    expect(guard(undefined)).toBe(false)
-    expect(guard(null)).toBe(false)
-    expect(guard({ name: 123 })).toBe(false)
-    expect(guard({ age: 30 })).toBe(false)
-    expect(guard({ name: 123 })).toBe(false)
-    expect(guard({ name: 'LuciNyan', age: '17' })).toBe(false)
+  it('should return a function that checks if an object with circular reference is of correct type', () => {
+    const guard = objectOf<Elem>({
+      name: isString,
+      ref: SELF,
+    })
+
+    const elem: any = { name: 'element' }
+
+    elem.abc = elem
+    expect(guard(elem)).toBe(false)
+
+    elem.ref = elem
+    expect(guard(elem)).toBe(true)
   })
 })
 
@@ -89,5 +81,47 @@ describe('arrayOf', () => {
       expect(guard([false])).toBe(false)
       expect(guard([false, 'hello'])).toBe(false)
     })
+  })
+})
+
+describe('or', () => {
+  it('should return true if value matches any of the guards', () => {
+    const guard = or(isString, isNumber, isBoolean)
+    expect(guard('foo')).toBe(true)
+    expect(guard(123)).toBe(true)
+    expect(guard(true)).toBe(true)
+  })
+
+  it('should return false if value does not match any of the guards', () => {
+    const guard = or(isString, isNumber, isBoolean)
+    expect(guard(undefined)).toBe(false)
+    expect(guard(null)).toBe(false)
+    expect(guard({})).toBe(false)
+    expect(guard([])).toBe(false)
+  })
+})
+
+describe('and', () => {
+  const guard = and(
+    isObject,
+    objectOf({
+      name: isString,
+    }),
+    objectOf({
+      age: isNumber,
+    })
+  )
+
+  it('should return true if value matches all of the guards', () => {
+    expect(guard({ name: 'LuciNyan', age: 17 })).toBe(true)
+  })
+
+  it('should return false if value does not match all of the guards', () => {
+    expect(guard(undefined)).toBe(false)
+    expect(guard(null)).toBe(false)
+    expect(guard({ name: 123 })).toBe(false)
+    expect(guard({ age: 30 })).toBe(false)
+    expect(guard({ name: 123 })).toBe(false)
+    expect(guard({ name: 'LuciNyan', age: '17' })).toBe(false)
   })
 })
