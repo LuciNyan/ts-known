@@ -16,10 +16,6 @@ describe('make', () => {
       bar: isNumber,
       baz: isBoolean,
     })
-    const a = { foo: 'hello', bar: 123, baz: false }
-    if (guard(a)) {
-      console.log(a.ba)
-    }
 
     expect(guard({ foo: 'hello', bar: 123, baz: false })).toBe(true)
     expect(guard({ foo: 'world', bar: '123', baz: false })).toBe(false)

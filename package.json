@@ -45,7 +45,8 @@
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ./**/*.ts --cache"
+    "format": "prettier --write ./**/*.ts --cache",
+    "type-check": "tsc --noEmit"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

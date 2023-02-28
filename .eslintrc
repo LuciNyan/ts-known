@@ -16,7 +16,8 @@
   "rules": {
     "semi": [2, "never"],
     "no-inner-declarations": 0,
-    "no-useless-escape": 1,
+    "no-useless-escape": 2,
+    "@typescript-eslint/no-unused-vars": 2,
     "@typescript-eslint/ban-ts-comment": 1,
     "@typescript-eslint/no-extra-semi": 0,
     "@typescript-eslint/no-shadow": 2,
