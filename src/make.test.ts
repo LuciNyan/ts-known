@@ -22,27 +22,18 @@ describe('make', () => {
     expect(guard({ foo: 'hello', bar: 123 })).toBe(false)
   })
 
-  it('1', () => {
+  it('should return a function that checks if an object with circular reference is of correct type', () => {
     const guard = make<Elem>({
       name: isString,
       ref: SELF,
     })
 
     const elem: any = { name: 'element' }
-    elem.ref = elem
 
-    expect(guard(elem)).toBe(true)
-  })
-
-  it('2', () => {
-    const guard = make<Elem>({
-      name: isString,
-      ref: SELF,
-    })
-
-    const elem: any = { name: 'element' }
     elem.abc = elem
-
     expect(guard(elem)).toBe(false)
+
+    elem.ref = elem
+    expect(guard(elem)).toBe(true)
   })
 })
