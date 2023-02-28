@@ -1,4 +1,4 @@
-import { UnionToIntersection } from './utils'
+import { UnionToIntersection, Guard } from './utils'
 
 export function union<T extends any[]>(
   ...guards: { [K in keyof T]: (x: unknown) => x is T[K] }
