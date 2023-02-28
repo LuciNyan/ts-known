@@ -35,6 +35,7 @@
     "*.d.ts"
   ],
   "scripts": {
+    "prepare": "husky install",
     "build": "rollup -c",
     "dev": "nr build --watch",
     "prepublishOnly": "npm run build",
@@ -44,7 +45,13 @@
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ./**/*.ts"
+    "format": "prettier --write ./**/*.ts --cache"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix --cache",
+      "prettier --write --cache"
+    ]
   },
   "devDependencies": {
     "@antfu/ni": "^0.18.8",
@@ -57,10 +64,10 @@
     "@types/node": "^18.11.9",
     "bumpp": "^8.2.1",
     "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "esno": "^0.16.3",
+    "husky": "8.0.3",
+    "lint-staged": "13.1.0",
     "prettier": "^2.4.0",
     "rollup": "^3.5.0",
     "rollup-plugin-dts": "^5.0.0",
