@@ -37,13 +37,14 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "nr build --watch",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run build",
     "release": "bumpp --commit --push --tag && npm publish --access=public",
     "start": "esno src/index.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ./**/*.ts"
   },
   "devDependencies": {
     "@antfu/ni": "^0.18.8",

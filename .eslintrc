@@ -6,17 +6,15 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier"],
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
   "rules": {
     "semi": [2, "never"],
-    "comma-dangle": ["error", "always-multiline"],
     "no-inner-declarations": 0,
     "no-useless-escape": 1,
     "@typescript-eslint/ban-ts-comment": 1,
@@ -25,7 +23,6 @@
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-namespace": 0,
     "@typescript-eslint/no-empty-function": 1,
-    "prettier/prettier": "error",
     "simple-import-sort/imports": [
       "warn",
       {
