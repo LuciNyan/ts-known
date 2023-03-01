@@ -1,19 +1,15 @@
 import { isObject } from './base'
 import { Guard } from './utils'
 
+export const SELF = (x: unknown): x is any => true
+
 export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is { [Key in K]: unknown } {
   return isObject(x) && name in x
 }
 
-export const SELF = (x: unknown): x is any => true
-
-export function hasProperty<K extends string, V>(
-  x: unknown,
-  name: K,
-  guard: (value: unknown) => value is V
-): x is { [Key in K]: V } {
+export function hasProperty<K extends string, V>(x: unknown, name: K, guard: Guard<V>): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
-    return false
+    return !!guard.optional
   }
 
   const memo = new Set([x])
@@ -48,7 +44,7 @@ export function _hasProperty<K extends string, V, R extends Record<PropertyKey, 
   } = {}
 ): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
-    return false
+    return !!guard.optional
   }
 
   memo.add(x)

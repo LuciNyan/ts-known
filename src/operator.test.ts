@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { isBoolean, isNumber, isObject, isString } from './base'
-import { and, arrayOf, objectOf, or } from './operator'
+import { and, arrayOf, objectOf, optional, or } from './operator'
 import { SELF } from './property'
 
 type Elem = {
@@ -119,9 +119,35 @@ describe('and', () => {
   it('should return false if value does not match all of the guards', () => {
     expect(guard(undefined)).toBe(false)
     expect(guard(null)).toBe(false)
-    expect(guard({ name: 123 })).toBe(false)
+    expect(guard({ name: 'Luci' })).toBe(false)
     expect(guard({ age: 30 })).toBe(false)
     expect(guard({ name: 123 })).toBe(false)
     expect(guard({ name: 'LuciNyan', age: '17' })).toBe(false)
+  })
+})
+
+describe('optional', () => {
+  const guard = and(
+    isObject,
+    objectOf({
+      name: optional(isString),
+    }),
+    objectOf({
+      age: optional(isNumber),
+    })
+  )
+
+  it('should return true if value matches all of the guards', () => {
+    expect(guard({ name: 'LuciNyan', age: 17 })).toBe(true)
+    expect(guard({ name: 'LuciNyan' })).toBe(true)
+    expect(guard({ age: 17 })).toBe(true)
+    expect(guard({})).toBe(true)
+  })
+
+  it('should return false if value does not match all of the guards', () => {
+    expect(guard(undefined)).toBe(false)
+    expect(guard(null)).toBe(false)
+    expect(guard({ name: 'LuciNyan', age: '17' })).toBe(false)
+    expect(guard({ name: 17 })).toBe(false)
   })
 })

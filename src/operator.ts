@@ -51,6 +51,18 @@ export function intersection<T extends any[]>(
   }
 }
 
+export function optional<T>(guard: Guard<T>): Guard<T> & {
+  optional: true
+} {
+  const _guard = (...args: Parameters<Guard<T>>) => guard(...args)
+
+  _guard.optional = true
+
+  return _guard as Guard<T> & {
+    optional: true
+  }
+}
+
 export const or = union
 export const and = intersection
 export const make = objectOf
