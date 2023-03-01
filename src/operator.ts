@@ -53,3 +53,4 @@ export function intersection<T extends any[]>(
 
 export const or = union
 export const and = intersection
+export const make = objectOf
