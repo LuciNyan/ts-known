@@ -1,5 +1,5 @@
 # ts-known
-If you're looking for a utility library to conveniently and safely handle unknown variables in your TypeScript projects, **ts-known** can help. With a collection of guards for common types and functions to generate type-specific guards, **ts-known** allows for easy handling of **unknown** variables caught by try-catch, network-transmitted data, and parsed JSON objects.
+If you're looking for a ultra-light and non-intrusive utility library to conveniently and safely handle unknown variables in your TypeScript projects, **ts-known** can help. With a collection of guards for common types and functions to generate type-specific guards, **ts-known** allows for easy handling of **unknown** variables caught by try-catch, network-transmitted data, and parsed JSON objects.
 
 ## Installation
 To install **ts-known**, simply use your favorite package manager:
