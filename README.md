@@ -50,7 +50,7 @@ const guard = objectOf({
 const x: unknown = {}
 
 if (guard(x)) {
-  type name = typeof x.name // string
+  type Name = typeof x.name // string
   type Friend = typeof x.friend // Dog
 }
 ```
