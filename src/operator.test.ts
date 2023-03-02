@@ -90,6 +90,21 @@ describe('or', () => {
     expect(guard({})).toBe(false)
     expect(guard([])).toBe(false)
   })
+
+  it('work with custom types together', () => {
+    class Dog {}
+    function isDog(x: unknown): x is Dog {
+      return x instanceof Dog
+    }
+
+    const guard = or(isString, isNumber, isDog)
+    expect(guard(undefined)).toBe(false)
+    expect(guard(null)).toBe(false)
+    expect(guard({})).toBe(false)
+    expect(guard([])).toBe(false)
+    expect(guard(1)).toBe(true)
+    expect(guard(new Dog())).toBe(true)
+  })
 })
 
 describe('and', () => {

@@ -62,3 +62,29 @@ doNotExecute(() => {
     test<Array<number>>(x)
   }
 })
+
+doNotExecute(() => {
+  type Person = {
+    name: string
+    friend: Dog
+  }
+  class Dog {}
+
+  function isDog(_x: unknown): _x is Dog {
+    return _x instanceof Dog
+  }
+
+  const guard = objectOf({
+    name: isString,
+    friend: isDog,
+  })
+
+  // @ts-expect-error
+  test<Person>(x)
+
+  if (guard(x)) {
+    test<Person>(x)
+    test<string>(x.name)
+    test<Dog>(x.friend)
+  }
+})
