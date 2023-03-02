@@ -26,18 +26,21 @@ describe('hasUnknownProperty', () => {
 describe('hasProperty', () => {
   it('should return true when the specified property passes the guard function', () => {
     const person = { name: 'LuciNyan', age: 30 }
+
     expect(hasProperty(person, 'name', isString)).toBe(true)
     expect(hasProperty(person, 'age', isNumber)).toBe(true)
   })
 
   it('should return false when the specified property does not pass the guard function', () => {
     const person = { name: 'LuciNyan', age: 30 }
+
     expect(hasProperty(person, 'name', isNumber)).toBe(false)
     expect(hasProperty(person, 'age', isString)).toBe(false)
   })
 
   it('should return false when the specified property does not exist', () => {
     const person = { name: 'LuciNyan' }
+
     expect(hasProperty(person, 'age', isNumber)).toBe(false)
   })
 
@@ -63,11 +66,13 @@ describe('hasProperty', () => {
 describe('hasProperties', () => {
   it('should return true when all specified properties pass their respective guard functions', () => {
     const person = { name: 'LuciNyan', age: 30, address: { city: 'New York' } }
+
     const guardByProperty = {
       name: isString,
       age: isNumber,
       address: objectOf({ city: isString }),
     }
+
     expect(hasProperties(person, guardByProperty)).toBe(true)
   })
 
@@ -77,11 +82,13 @@ describe('hasProperties', () => {
       age: '30',
       address: { city: 'New York' },
     }
+
     const guardByProperty = {
       name: isString,
       age: isNumber,
       address: objectOf({ city: isString }),
     }
+
     expect(hasProperties(person, guardByProperty)).toBe(false)
   })
 
@@ -92,6 +99,7 @@ describe('hasProperties', () => {
       age: isNumber,
       address: objectOf({ city: isString }),
     }
+
     expect(hasProperties(person, guardByProperty)).toBe(false)
   })
 })

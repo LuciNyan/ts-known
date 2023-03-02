@@ -1,7 +1,8 @@
 import { isObject } from './base'
-import { Guard } from './utils'
+import { Guard, GuardConfig, MakeTypeFromConfig } from './utils'
 
-export const SELF = (x: unknown): x is any => true
+export const SELF: Guard<any> = (x: unknown): x is any => true
+SELF.isSelf = true
 
 export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is { [Key in K]: unknown } {
   return isObject(x) && name in x
@@ -9,7 +10,7 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
 
 export function hasProperty<K extends string, V>(x: unknown, name: K, guard: Guard<V>): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
-    return !!guard.optional
+    return !!guard.isOptional
   }
 
   const memo = new Set([x])
@@ -21,12 +22,7 @@ export function hasProperty<K extends string, V>(x: unknown, name: K, guard: Gua
   return guard(x[name])
 }
 
-export function hasProperties<R extends Record<PropertyKey, unknown>>(
-  x: unknown,
-  guardByProperty: {
-    [K in keyof R]: Guard<R[K]>
-  }
-): x is R {
+export function hasProperties<R extends GuardConfig>(x: unknown, guardByProperty: R): x is MakeTypeFromConfig<R> {
   const memo = new Set([x])
 
   return Object.entries(guardByProperty).every(([key, guard]) => {
@@ -34,35 +30,31 @@ export function hasProperties<R extends Record<PropertyKey, unknown>>(
   })
 }
 
-export function _hasProperty<K extends string, V, R extends Record<PropertyKey, unknown>>(
+export function _hasProperty<K extends string, V, R extends GuardConfig>(
   x: unknown,
   name: K,
   guard: Guard<V>,
   memo = new Set(),
-  guardByProperty: {
-    [Key in keyof R]?: Guard<R[Key]>
-  } = {}
+  guardByProperty?: R
 ): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
-    return !!guard.optional
+    return !!guard.isOptional
   }
 
   memo.add(x)
 
-  if (guard === SELF) {
+  if (guard === SELF && guardByProperty) {
     return memo.has(x[name]) ? true : _hasProperties(x[name], guardByProperty, memo)
   }
 
   return guard(x[name])
 }
 
-export function _hasProperties<R extends Record<PropertyKey, unknown>>(
+export function _hasProperties<R extends GuardConfig>(
   x: unknown,
-  guardByProperty: {
-    [Key in keyof R]?: Guard<R[Key]>
-  },
+  guardByProperty: R,
   memo = new Set()
-): x is R {
+): x is MakeTypeFromConfig<R> {
   memo.add(x)
 
   return Object.entries(guardByProperty).every(([key, guard]) => {

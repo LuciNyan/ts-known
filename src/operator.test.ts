@@ -4,11 +4,6 @@ import { isBoolean, isNumber, isObject, isString } from './base'
 import { and, arrayOf, objectOf, optional, or } from './operator'
 import { SELF } from './property'
 
-type Elem = {
-  name: string
-  ref: Elem
-}
-
 describe('objectOf', () => {
   it('should return a function that checks if an object has properties guarded by given guards', () => {
     const guard = objectOf({
@@ -23,9 +18,10 @@ describe('objectOf', () => {
   })
 
   it('should return a function that checks if an object with circular reference is of correct type', () => {
-    const guard = objectOf<Elem>({
+    const guard = objectOf({
       name: isString,
       ref: SELF,
+      age: optional(isNumber),
     })
 
     const elem: any = { name: 'element' }
@@ -33,7 +29,16 @@ describe('objectOf', () => {
     elem.abc = elem
     expect(guard(elem)).toBe(false)
 
+    elem.ref = false
+    expect(guard(elem)).toBe(false)
+
     elem.ref = elem
+    expect(guard(elem)).toBe(true)
+
+    elem.age = elem
+    expect(guard(elem)).toBe(false)
+
+    elem.age = 17
     expect(guard(elem)).toBe(true)
   })
 })
@@ -66,20 +71,6 @@ describe('arrayOf', () => {
     it('returns false when passed an array of non-matching types', () => {
       expect(guard([true])).toBe(false)
       expect(guard([1, 'hello', true])).toBe(false)
-    })
-  })
-
-  describe('when passed a combination of guards', () => {
-    const guard = arrayOf([isBoolean, isNumber])
-
-    it('returns true when passed an array of matching types', () => {
-      expect(guard([false, 1])).toBe(true)
-    })
-
-    it('returns false when passed an array of non-matching types', () => {
-      expect(guard([1, false])).toBe(false)
-      expect(guard([false])).toBe(false)
-      expect(guard([false, 'hello'])).toBe(false)
     })
   })
 })

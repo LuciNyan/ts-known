@@ -40,5 +40,15 @@
     ],
     "simple-import-sort/exports": "warn"
   },
+  "overrides": [
+    {
+      "files": ["*.type-test.ts", "test-utils.ts"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": 0,
+        "@typescript-eslint/no-empty-function": 0,
+        "@typescript-eslint/ban-ts-comment": 0
+      }
+    }
+  ],
   "ignorePatterns": ["dist/", "node_modules"]
 }

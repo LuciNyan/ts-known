@@ -1,29 +1,13 @@
 import { hasProperties } from './property'
-import { Guard, UnionToIntersection } from './utils'
+import { Guard, MakeGuardFromConfig, MakeTypeFromConfig, UnionToIntersection } from './utils'
 
-export function objectOf<R extends Record<PropertyKey, unknown>>(guardByProperty: {
-  [K in keyof R]: Guard<R[K]>
-}): (value: unknown) => value is R {
-  return (x: unknown): x is R => {
+export function objectOf<R extends Record<PropertyKey, Guard<unknown>>>(guardByProperty: R): MakeGuardFromConfig<R> {
+  return (x: unknown): x is MakeTypeFromConfig<R> => {
     return hasProperties(x, guardByProperty)
   }
 }
 
-export function arrayOf<T extends unknown[]>(guards: { [K in keyof T]: Guard<T[K]> }): Guard<T>
-export function arrayOf<T extends unknown[]>(...guards: { [K in keyof T]: Guard<T[K]> }): Guard<T>
-export function arrayOf<T extends unknown[]>(
-  ...guards: { [K in keyof T]: Guard<T[K]> } | [{ [K in keyof T]: Guard<T[K]> }]
-): Guard<T> {
-  const _guards = guards[0]
-  if (Array.isArray(_guards)) {
-    return (x: unknown): x is T => {
-      if (!Array.isArray(x) || x.length !== _guards.length) {
-        return false
-      }
-      return x.every((value, index) => _guards[index](value))
-    }
-  }
-
+export function arrayOf<T extends unknown[]>(...guards: { [K in keyof T]: Guard<T[K]> }): Guard<T> {
   return function (x: unknown): x is T {
     if (!Array.isArray(x)) {
       return false
@@ -52,14 +36,14 @@ export function intersection<T extends any[]>(
 }
 
 export function optional<T>(guard: Guard<T>): Guard<T> & {
-  optional: true
+  isOptional: true
 } {
   const _guard = (...args: Parameters<Guard<T>>) => guard(...args)
 
-  _guard.optional = true
+  _guard.isOptional = true
 
   return _guard as Guard<T> & {
-    optional: true
+    isOptional: true
   }
 }
 
