@@ -8,6 +8,7 @@ import {
   isNull,
   isNumber,
   isObject,
+  isPromise,
   isRegExp,
   isString,
   isSymbol,
@@ -211,6 +212,21 @@ describe('isBigInt', () => {
 
 describe('isWindow', () => {
   it('should return false if value is not the window object', () => {
+    expect(isWindow(undefined)).toBe(false)
+    expect(isWindow(null)).toBe(false)
+    expect(isWindow(123)).toBe(false)
+    expect(isWindow('string')).toBe(false)
+    expect(isWindow(true)).toBe(false)
+    expect(isWindow({})).toBe(false)
+  })
+})
+
+describe('isPromise', () => {
+  it('should return true if value is a Promise', () => {
+    expect(isPromise(new Promise(() => {}))).toBe(true)
+    expect(isPromise(Promise.resolve())).toBe(true)
+  })
+  it('should return false if value is not a Promise', () => {
     expect(isWindow(undefined)).toBe(false)
     expect(isWindow(null)).toBe(false)
     expect(isWindow(123)).toBe(false)
