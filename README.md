@@ -29,6 +29,32 @@ if (isIterator(x)) {
 }
 ```
 
+**ts-known** provides operators and guards that can be easily used together with your own type guards. For example, consider the following types and type guard.
+```ts
+type Person = {
+  name: string;
+  friend: Dog;
+};
+
+class Dog {}
+
+function isDog(x: unknown): x is Dog {
+  return x instanceof Dog;
+}
+
+const guard = objectOf({
+  name: isString,
+  friend: isDog,
+})
+
+const x: unknown = {}
+
+if (guard(x)) {
+  type name = typeof x.name // string
+  type Friend = typeof x.friend // Dog
+}
+```
+
 
 In addition to the provided guards, you can also generate your own type-specific guards.
 
