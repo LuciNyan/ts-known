@@ -1,7 +1,7 @@
 {
   "name": "ts-known",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "This library offers guards for common types, and methods to generate type guards for specific types quickly. Safely handle unpredictable unknown types with ease",
   "packageManager": "pnpm@7.0.1",
   "author": "LuciNyan",
