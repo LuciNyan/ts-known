@@ -1,8 +1,10 @@
 import { isObject } from './base'
 import { Guard, GuardConfig, MakeTypeFromConfig } from './utils'
 
-export const SELF: Guard<any> = (x: unknown): x is any => true
-SELF.isSelf = true
+const circularRefPlaceholder: Guard<any> = (x: unknown): x is any => true
+circularRefPlaceholder.__isSelf = true
+
+export const SELF = circularRefPlaceholder
 
 export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is { [Key in K]: unknown } {
   return isObject(x) && name in x
@@ -10,12 +12,12 @@ export function hasUnknownProperty<K extends string>(x: unknown, name: K): x is 
 
 export function hasProperty<K extends string, V>(x: unknown, name: K, guard: Guard<V>): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
-    return !!guard.isOptional
+    return !!guard.__isOptional
   }
 
   const memo = new Set([x])
 
-  if (guard === SELF) {
+  if (isCircularRefPlaceholder(guard)) {
     return _hasProperty(x[name], name, SELF, memo)
   }
 
@@ -38,12 +40,12 @@ export function _hasProperty<K extends string, V, R extends GuardConfig>(
   guardByProperty?: R
 ): x is { [Key in K]: V } {
   if (!hasUnknownProperty(x, name)) {
-    return !!guard.isOptional
+    return !!guard.__isOptional
   }
 
   memo.add(x)
 
-  if (guard === SELF && guardByProperty) {
+  if (isCircularRefPlaceholder(guard) && guardByProperty) {
     return memo.has(x[name]) ? true : _hasProperties(x[name], guardByProperty, memo)
   }
 
@@ -60,4 +62,8 @@ export function _hasProperties<R extends GuardConfig>(
   return Object.entries(guardByProperty).every(([key, guard]) => {
     return _hasProperty(x, key, guard, memo, guardByProperty)
   })
+}
+
+function isCircularRefPlaceholder(x: Guard<unknown>): boolean {
+  return !!x.__isSelf
 }

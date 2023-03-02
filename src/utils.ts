@@ -1,8 +1,8 @@
 export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
 
 export type Guard<T> = ((x: unknown) => x is T) & {
-  isOptional?: boolean
-  isSelf?: boolean
+  __isOptional?: boolean
+  __isSelf?: boolean
 }
 
 export type GuardFor<T> = T extends Guard<infer R> ? R : never
@@ -17,7 +17,7 @@ export type MakeTypeFromConfig<T extends Record<PropertyKey, Guard<unknown>>> = 
 >
 
 type handleMetadataIsOptional<T extends GuardConfig, K extends keyof T> = K extends K
-  ? T[K] extends { isOptional: true }
+  ? T[K] extends { __isOptional: true }
     ? {
         [Key in keyof T as Key extends K ? Key : never]?: T[K]
       }
@@ -27,7 +27,7 @@ type handleMetadataIsOptional<T extends GuardConfig, K extends keyof T> = K exte
   : never
 
 type handleMetadataIsSelf<T> = {
-  [K in keyof T]: T[K] extends { isSelf: true } ? handleMetadataIsSelf<T> : GuardFor<T[K]>
+  [K in keyof T]: T[K] extends { __isSelf: true } ? handleMetadataIsSelf<T> : GuardFor<T[K]>
 }
 
 export function toString(x: unknown): string {

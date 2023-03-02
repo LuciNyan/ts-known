@@ -20,14 +20,14 @@ describe('objectOf', () => {
   it('should return a function that checks if an object with circular reference is of correct type', () => {
     const guard = objectOf({
       name: isString,
-      ref: SELF,
+      ref: optional(SELF),
       age: optional(isNumber),
     })
 
     const elem: any = { name: 'element' }
 
     elem.abc = elem
-    expect(guard(elem)).toBe(false)
+    expect(guard(elem)).toBe(true)
 
     elem.ref = false
     expect(guard(elem)).toBe(false)

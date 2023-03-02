@@ -36,14 +36,17 @@ export function intersection<T extends any[]>(
 }
 
 export function optional<T>(guard: Guard<T>): Guard<T> & {
-  isOptional: true
+  __isOptional: true
 } {
   const _guard = (...args: Parameters<Guard<T>>) => guard(...args)
 
-  _guard.isOptional = true
+  _guard.__isOptional = true
+  if (guard.__isSelf) {
+    _guard.__isSelf = guard.__isSelf
+  }
 
   return _guard as Guard<T> & {
-    isOptional: true
+    __isOptional: true
   }
 }
 
