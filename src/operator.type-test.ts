@@ -21,6 +21,9 @@ doNotExecute(() => {
 
   if (guard(x)) {
     test<Elem>(x)
+    test<Elem>(x.ref)
+    // @ts-expect-error
+    test<Elem>(x.name)
     // @ts-expect-error
     test<Required<Elem>>(x)
   }

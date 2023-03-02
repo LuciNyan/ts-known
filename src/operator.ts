@@ -41,8 +41,9 @@ export function optional<T>(guard: Guard<T>): Guard<T> & {
   const _guard = (...args: Parameters<Guard<T>>) => guard(...args)
 
   _guard.__isOptional = true
-  if (guard.__isSelf) {
-    _guard.__isSelf = guard.__isSelf
+
+  if (guard.__isCircularRef) {
+    _guard.__isCircularRef = guard.__isCircularRef
   }
 
   return _guard as Guard<T> & {

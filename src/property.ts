@@ -2,7 +2,7 @@ import { isObject } from './base'
 import { Guard, GuardConfig, MakeTypeFromConfig } from './utils'
 
 const circularRefPlaceholder: Guard<any> = (x: unknown): x is any => true
-circularRefPlaceholder.__isSelf = true
+circularRefPlaceholder.__isCircularRef = true
 
 export const SELF = circularRefPlaceholder
 
@@ -65,5 +65,5 @@ export function _hasProperties<R extends GuardConfig>(
 }
 
 function isCircularRefPlaceholder(x: Guard<unknown>): boolean {
-  return !!x.__isSelf
+  return !!x.__isCircularRef
 }
