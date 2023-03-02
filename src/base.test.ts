@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import {
+  isBigInt,
   isBoolean,
   isDate,
   isFunction,
@@ -190,6 +191,21 @@ describe('isSymbol', () => {
     expect(isSymbol('string')).toBe(false)
     expect(isSymbol(true)).toBe(false)
     expect(isSymbol({})).toBe(false)
+  })
+})
+
+describe('isBigInt', () => {
+  it('should return true if value is a BigInt', () => {
+    expect(isBigInt(BigInt('0x1fffffffffffff'))).toBe(true)
+  })
+
+  it('should return false if value is not a BigInt', () => {
+    expect(isBigInt(undefined)).toBe(false)
+    expect(isBigInt(null)).toBe(false)
+    expect(isBigInt(123)).toBe(false)
+    expect(isBigInt('string')).toBe(false)
+    expect(isBigInt(true)).toBe(false)
+    expect(isBigInt({})).toBe(false)
   })
 })
 

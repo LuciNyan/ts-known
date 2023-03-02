@@ -40,6 +40,10 @@ export function isSymbol(x: unknown): x is Symbol {
   return toString(x) === '[object Symbol]'
 }
 
+export function isBigInt(x: unknown): x is BigInt {
+  return toString(x) === '[object BigInt]'
+}
+
 export function isWindow(x: unknown): x is Window {
   return toString(x) === '[object Window]'
 }
