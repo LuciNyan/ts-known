@@ -55,3 +55,11 @@ export function isPromise(x: unknown): x is Promise<unknown> {
 export function isIterator(obj: unknown): obj is Iterator<unknown> {
   return isObject(obj) && obj !== null && typeof (obj as any)[Symbol.iterator] === 'function'
 }
+
+export function isMap(obj: unknown): obj is Map<unknown, unknown> {
+  return toString(obj) === '[object Map]'
+}
+
+export function isSet(obj: unknown): obj is Set<unknown> {
+  return toString(obj) === '[object Set]'
+}
