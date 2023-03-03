@@ -48,6 +48,10 @@ export function isWindow(x: unknown): x is Window {
   return toString(x) === '[object Window]'
 }
 
+export function isPromise(x: unknown): x is Promise<unknown> {
+  return toString(x) === '[object Promise]'
+}
+
 export function isIterator(obj: unknown): obj is Iterator<unknown> {
   return isObject(obj) && obj !== null && typeof (obj as any)[Symbol.iterator] === 'function'
 }
