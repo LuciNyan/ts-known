@@ -144,6 +144,9 @@ describe('isObject', () => {
     expect(isObject('string')).toBe(false)
     expect(isObject(true)).toBe(false)
     expect(isObject(function () {})).toBe(false)
+    expect(isObject(new Date())).toBe(false)
+    expect(isObject(/abc/)).toBe(false)
+    expect(isObject(new RegExp('abc'))).toBe(false)
   })
 })
 
