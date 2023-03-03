@@ -5,11 +5,13 @@ import {
   isBoolean,
   isDate,
   isFunction,
+  isMap,
   isNull,
   isNumber,
   isObject,
   isPromise,
   isRegExp,
+  isSet,
   isString,
   isSymbol,
   isUndefined,
@@ -236,5 +238,35 @@ describe('isPromise', () => {
     expect(isWindow('string')).toBe(false)
     expect(isWindow(true)).toBe(false)
     expect(isWindow({})).toBe(false)
+  })
+})
+
+describe('isMap', () => {
+  it('should return true if value is a Map', () => {
+    expect(isMap(new Map())).toBe(true)
+  })
+
+  it('should return false if value is not a Map', () => {
+    expect(isMap(undefined)).toBe(false)
+    expect(isMap(null)).toBe(false)
+    expect(isMap(123)).toBe(false)
+    expect(isMap('string')).toBe(false)
+    expect(isMap(true)).toBe(false)
+    expect(isMap({})).toBe(false)
+  })
+})
+
+describe('isSet', () => {
+  it('should return true if value is a Set', () => {
+    expect(isSet(new Set())).toBe(true)
+  })
+
+  it('should return false if value is not a Set', () => {
+    expect(isSet(undefined)).toBe(false)
+    expect(isSet(null)).toBe(false)
+    expect(isSet(123)).toBe(false)
+    expect(isSet('string')).toBe(false)
+    expect(isSet(true)).toBe(false)
+    expect(isSet({})).toBe(false)
   })
 })
