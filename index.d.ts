@@ -4,13 +4,16 @@ declare function isBoolean(x: unknown): x is boolean
 declare function isUndefined(x: unknown): x is undefined
 declare function isNull(x: unknown): x is null
 declare function isFunction(x: unknown): x is Function
-declare function isObject(x: unknown): x is object
+declare function isObject(x: unknown): x is Record<string, unknown>
 declare function isRegExp(x: unknown): x is RegExp
 declare function isDate(x: unknown): x is Date
 declare function isSymbol(x: unknown): x is Symbol
 declare function isBigInt(x: unknown): x is BigInt
 declare function isWindow(x: unknown): x is Window
+declare function isPromise(x: unknown): x is Promise<unknown>
 declare function isIterator(obj: unknown): obj is Iterator<unknown>
+declare function isMap(obj: unknown): obj is Map<unknown, unknown>
+declare function isSet(obj: unknown): obj is Set<unknown>
 
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never
 type Guard<T> = ((x: unknown) => x is T) & {
@@ -119,10 +122,13 @@ export {
   isDate,
   isFunction,
   isIterator,
+  isMap,
   isNull,
   isNumber,
   isObject,
+  isPromise,
   isRegExp,
+  isSet,
   isString,
   isSymbol,
   isUndefined,
