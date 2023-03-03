@@ -24,7 +24,7 @@ export function isFunction(x: unknown): x is Function {
   return toString(x) === '[object Function]'
 }
 
-export function isObject(x: unknown): x is object {
+export function isObject(x: unknown): x is Record<string, unknown> {
   return toString(x) === '[object Object]'
 }
 
